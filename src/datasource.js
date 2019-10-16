@@ -24,7 +24,6 @@ export class GenericDatasource {
     }
 
     console.log('Constructor called!');
-    console.log(this.mqttUri);
 
   }
 
@@ -50,7 +49,7 @@ export class GenericDatasource {
   }
 
   testDatasource() {
-
+    console.log(this.mqttUri);
     console.log(mqtt.connect);
 
     // MQTT: connect and subscribe
