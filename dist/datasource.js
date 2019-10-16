@@ -40,7 +40,7 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
         function GenericDatasource(instanceSettings, $q, backendSrv, templateSrv) {
           _classCallCheck(this, GenericDatasource);
 
-          // MQTT URL
+          // MQTT URI
           this.mqttUri = 'mqtt://22785c89-3852-4c57-b912-c093f2e2a995%3A15efc544-8611-456e-955e-98d522992910:pmuz5gVoIGMeR9flIQ05b9QOi@40.81.26.31:1883';
 
           this.type = instanceSettings.type;
@@ -56,7 +56,6 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
           }
 
           console.log('Constructor called!');
-          console.log(this.mqttUri);
         }
 
         _createClass(GenericDatasource, [{
@@ -86,7 +85,7 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
         }, {
           key: 'testDatasource',
           value: function testDatasource() {
-
+            console.log(this.mqttUri);
             console.log(mqtt.connect);
 
             // MQTT: connect and subscribe
