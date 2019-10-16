@@ -3,7 +3,7 @@
 System.register(['lodash', './external/mqtt'], function (_export, _context) {
   "use strict";
 
-  var _, mqtt, _createClass, GenericDatasource;
+  var _, connect, _createClass, GenericDatasource;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -15,7 +15,7 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
     setters: [function (_lodash) {
       _ = _lodash.default;
     }, function (_externalMqtt) {
-      mqtt = _externalMqtt;
+      connect = _externalMqtt.connect;
     }],
     execute: function () {
       _createClass = function () {
@@ -56,6 +56,7 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
           }
 
           console.log('Constructor called!');
+          console.log(connect);
         }
 
         _createClass(GenericDatasource, [{
@@ -85,11 +86,11 @@ System.register(['lodash', './external/mqtt'], function (_export, _context) {
         }, {
           key: 'testDatasource',
           value: function testDatasource() {
-            console.log(this.mqttUri);
-            console.log(mqtt.connect);
+            // console.log(this.mqttUri);
+            // console.log(mqtt.connect);
 
             // MQTT: connect and subscribe
-            var client = mqtt.connect(this.mqttUri);
+            var client = connect(this.mqttUri);
             client.on('connect', function () {
               client.subscribe('temp', function (err) {
                 if (!err) {

@@ -2,8 +2,9 @@ import _ from "lodash";
 // import mqtt from 'mqtt';
 // const connect = mqtt.connect;
 // import mqtt from 'mqtt';
-import * as mqtt from './external/mqtt';
-// import { connect } from './external/mqtt';
+// import * as mqtt from './external/mqtt';
+// import mqtt from './external/mqtt';
+import { connect } from './external/mqtt';
 
 export class GenericDatasource {
 
@@ -24,6 +25,7 @@ export class GenericDatasource {
     }
 
     console.log('Constructor called!');
+    console.log(connect);
 
   }
 
@@ -49,11 +51,11 @@ export class GenericDatasource {
   }
 
   testDatasource() {
-    console.log(this.mqttUri);
-    console.log(mqtt.connect);
+    // console.log(this.mqttUri);
+    // console.log(mqtt.connect);
 
     // MQTT: connect and subscribe
-    let client = mqtt.connect(this.mqttUri);
+    let client = connect(this.mqttUri);
     client.on('connect', function () {
       client.subscribe('temp', function (err) {
         if (!err) {
