@@ -2,7 +2,7 @@
 
 想實現一個 data source plugin，可以直接透過 ``mqtt`` 連接 IoT Hub 並接收訊息。目的是在提供 demo 給客戶時，甚至是 PoC 階段，可以不用透過資料庫或其他後端伺服器獲取數據，而是直接透過 ``mqtt message`` 接收數據，藉此快速產生應用範例，並且因為不需要讀寫資料庫，進而增加數據顯示的效率。
 
-# 使用方式
+# 開發完成後之使用方式
 1. 使用者只要在 data source 輸入 IoT Hub 連線資訊，例如 ``mqtt uri``。
 2. 點擊 ``Save & Test`` 按鈕測試與 IoT Hub 之連線。
 3. 新增 Panel 之後，在 edit mode 選擇此 data source。
@@ -11,21 +11,26 @@
 
 # 遇到的問題
 
-實作方式是拿官方的 [simple-json-datasource](https://github.com/grafana/simple-json-datasource) 做修改。
+實作方式是拿官方的 [simple-json-datasource](https://github.com/grafana/simple-json-datasource) 做修改，以下為遇到的問題。
 
-<br>
-
-## 導入 mqtt 依賴項
+## 導入 mqtt 依賴項之問題
 
 由於直接使用 npm module 導入的方式，在 grafana 架構中不適用，查了[這個討論串](https://github.com/grafana/simple-json-datasource/issues/19)，做如下的修改，便沒有導入的問題。
 
-### 新增 external 資料夾
+### 1. 安裝 mqtt
+
+```
+npm install mqtt
+```
+
+
+### 2. 新增 external 資料夾
 
 - 在 ``src`` 資料夾中新增 ``external`` 資料夾
 - 從 ``node_modules/mqtt/dist`` 中將 ``mqtt.js`` 與 ``mqtt.min.js`` 複製到上述 ``external`` 資料夾
 
 
-### Gruntfile
+### 3. 修改 Gruntfile
 
 - 新增了 ``copy:externals`` 任務
 - 取消 ``mochaTest`` 
@@ -122,7 +127,7 @@ module.exports = function (grunt) {
 
 ```
 
-### 導入 mqtt
+### 4. 導入 mqtt
 
 _datasource.js_
 ```js
@@ -136,7 +141,7 @@ import * as mqtt from './external/mqtt';
 
 ## 驗證導入後是否可使用
 
-1. 在 ``datasource.js`` 中的 ``GenericDatasource`` class 中的 constructor 加入 mqtt uri。
+- 在 ``datasource.js`` 中的 ``GenericDatasource`` class 中的 constructor 加入 ``this.mqttUri``。
 
 ```js
 export class GenericDatasource {
@@ -161,7 +166,7 @@ export class GenericDatasource {
 
 <br>
 
-2. 在 `` testDatasource()`` 中加入連線 mqtt 的程式碼。
+- 在 `` testDatasource()`` 中加入連線 mqtt 的程式碼。
 
 ```js
 testDatasource() {
@@ -199,14 +204,15 @@ testDatasource() {
 ## 執行結果
 
 點擊 ``Save & Test`` 按鈕，會彈出 ``mqtt.connect is not a function`` 的錯誤訊息。
+
 ![not a function](screen/not-a-function.png)
 
 <br>
 
-在 Chrome inspect tool 中 Console 顯示以下訊息。
+在 Chrome inspect tool 中 Console 則顯示以下訊息。
 
 ![console](screen/console.png)
 
 - ``constructor called`` 表示點擊 ``Test & Save`` 時，constructor 會被呼叫。
-- mqtt uri 有正常被設定。
-- 嘗試印出 ``mqtt.connect``，顯示為 undefined。
+- ``mqttUri`` 有正常被設定。
+- 嘗試印出 ``mqtt.connect``，但顯示為 ``undefined``。

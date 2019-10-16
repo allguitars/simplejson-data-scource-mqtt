@@ -8,7 +8,7 @@ import * as mqtt from './external/mqtt';
 export class GenericDatasource {
 
   constructor(instanceSettings, $q, backendSrv, templateSrv) {
-    // MQTT URL
+    // MQTT URI
     this.mqttUri = 'mqtt://22785c89-3852-4c57-b912-c093f2e2a995%3A15efc544-8611-456e-955e-98d522992910:pmuz5gVoIGMeR9flIQ05b9QOi@40.81.26.31:1883';
 
     this.type = instanceSettings.type;
